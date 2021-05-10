@@ -1,0 +1,183 @@
+body {
+  background-color: #c0d6df;
+  margin: 0;
+  font-family: "Gloria Hallelujah", cursive;
+}
+
+a {
+  text-decoration: none;
+}
+
+#mmcd {
+  color: #084c61;
+  font-size: xx-large;
+  font-weight: 900;
+}
+
+#header_navbar {
+  background-color: #82c0cc;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 22px;
+  margin-bottom: 25px;
+}
+
+.navbar_menu {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+.navbar_menu_item {
+  cursor: pointer;
+  color: #16697a;
+  font-size: 19px;
+}
+
+#logout_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  margin-top: 20px;
+  padding: 5px 17px;
+  border: 1px solid #084c61;
+  border-radius: 4px;
+  background-color: #084c61;
+  cursor: pointer;
+}
+
+.process_btns {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.process_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 1px solid #16697a;
+  border-radius: 4px;
+  background-color: #16697a;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+#delete_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #07262e;
+  border-radius: 4px;
+  background-color: #07262e;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.search_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #07262e;
+  border-radius: 4px;
+  background-color: #07262e;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+#applied_jobs {
+  padding-top: 30px;
+  padding-left: 30px;
+  font-size: 17px;
+}
+
+input[type="text"] {
+  font-size: 20px;
+  height: 38px;
+  width: 380px;
+  margin-right: 20px;
+  padding-left: 5px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 15px;
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+#gl_user {
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 70px;
+}
+
+.log_app_area {
+  width: 100%;
+}
+
+.log_app_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #084c61;
+  border-radius: 4px;
+  background-color: #084c61;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+#user_statistics {
+  text-align: center;
+  margin-top: 90px;
+  color: #084c61;
+}
+
+.result_header_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #084c61;
+  border-radius: 4px;
+  background-color: #084c61;
+  cursor: pointer;
+  margin: 30px 35px;
+}
+
+#result_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#search_result {
+  line-height: 10px;
+}
+
+#result_info {
+  padding-left: 35px;
+}
