@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applied</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="static/styles.css?ver=21">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
     
@@ -14,15 +14,17 @@
     <div id="header_navbar">
         <div class="header">
             <a href="#" id="mmcd">My Mad Coop Diary</a>
-            <button id="logout_btn">To main</button>
+            <form action="/main" method="get">
+                <button type="submit" id="logout_btn">To main</button>
+            </form>
         </div>
             <ul class="navbar_menu">
-                <li class="navbar_menu_item" data-link="#home">Applied</li>
-                <li class="navbar_menu_item" data-link="#home">Phone screening/Assessment</li>
-                <li class="navbar_menu_item" data-link="#home">Interview Offer</li>
-                <li class="navbar_menu_item" data-link="#home">Job offer</li>
-                <li class="navbar_menu_item" data-link="#home">Declined</li>
-                <li class="navbar_menu_item" data-link="#home">Ghosted</li>
+                <li class="navbar_menu_item" id="current_page">Applied</li>
+                <li class="navbar_menu_item"><a href="{{ url_for('phone') }}">Phone screening/Assessment</a></li>
+                <li class="navbar_menu_item"><a href="{{ url_for('interview') }}">Interview Offer</a></li>
+                <li class="navbar_menu_item"><a href="{{ url_for('job') }}">Job offer</a></li>
+                <li class="navbar_menu_item"><a href="{{ url_for('declined') }}">Declined</a></li>
+                <li class="navbar_menu_item"><a href="{{ url_for('ghosted') }}">Ghosted</a></li>
             </ul>
     </div>
     <div class="process_btns">
@@ -33,6 +35,14 @@
         <button class="process_btn">Ghosted</button>
         <button id="delete_btn">Delete</button>
     </div>
+    <section class="process_grid">
+        <h3>#</h3>
+        <h3>Title</h3>
+        <h3>Company</h3>
+        <h3>Location</h3>
+        <h3>Date</h3>
+        <h3>ID</h3>
+    </section>    
     <div id="applied_jobs">
         
             <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">

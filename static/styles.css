@@ -1,0 +1,362 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #c0d6df;
+  margin: 0;
+  font-family: "Gloria Hallelujah", cursive;
+}
+
+a {
+  text-decoration: none;
+  color: #16697a;
+}
+a:visited {
+  color: #16697a;
+} /* Visited link    */
+a:hover {
+  color: #16697a;
+} /* Mouse over link */
+a:active {
+  color: #16697a;
+} /* Selected link   */
+
+section.result_grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 30% 12% 12% 12% 12% 12%;
+  padding: 0 35px;
+  gap: 20px;
+}
+
+section.process_grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2% 30% 16% 16% 16% 16%;
+  padding: 0 35px;
+  gap: 20px;
+}
+
+#mmcd {
+  color: #084c61;
+  font-size: xx-large;
+  font-weight: 900;
+}
+
+#header_navbar {
+  background-color: #82c0cc;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 22px;
+  margin-bottom: 25px;
+}
+
+.navbar_menu {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+.navbar_menu_item {
+  cursor: pointer;
+  color: #16697a;
+  font-size: 19px;
+}
+
+#logout_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  margin-top: 20px;
+  padding: 5px 17px;
+  border: 1px solid #084c61;
+  border-radius: 4px;
+  background-color: #084c61;
+  cursor: pointer;
+}
+
+.process_btns {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 15px;
+}
+
+.process_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 1px solid #16697a;
+  border-radius: 4px;
+  background-color: #16697a;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+#delete_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #07262e;
+  border-radius: 4px;
+  background-color: #07262e;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.search_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #07262e;
+  border-radius: 4px;
+  background-color: #07262e;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+#applied_jobs {
+  padding-top: 30px;
+  padding-left: 30px;
+  font-size: 17px;
+}
+
+#input_job_desc,
+#input_location {
+  font-size: 20px;
+  height: 45px;
+  width: 380px;
+  margin-right: 20px;
+  padding: 10px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 15px;
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+#gl_user {
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 70px;
+}
+
+.log_app_area {
+  width: 100%;
+}
+
+.log_app_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #084c61;
+  border-radius: 4px;
+  background-color: #084c61;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+#user_statistics {
+  text-align: center;
+  margin-top: 90px;
+  color: #084c61;
+}
+
+.result_header_btn {
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #084c61;
+  border-radius: 4px;
+  background-color: #084c61;
+  cursor: pointer;
+  margin: 35px 35px;
+}
+
+#search_result {
+  line-height: 10px;
+}
+
+.result_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#result_info {
+  padding-left: 35px;
+  padding-top: 30px;
+}
+
+/* Pop up Form !!! */
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 400px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type="text"],
+.form-container input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 17px 0;
+  border: none;
+  background: #f1f1f1;
+  font-family: inherit;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type="text"]:focus,
+.form-container input[type="date"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #084c61;
+  font-family: inherit;
+  border-radius: 4px;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+  font-size: 17px;
+  font-weight: 300;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: rgb(177, 65, 20);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 300;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover,
+.open-button:hover {
+  opacity: 1;
+}
+
+.result_btns {
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+  background-color: rgb(80, 124, 128);
+  font-size: 14px;
+  font-weight: 300;
+  border: 2px solid rgb(80, 124, 128);
+  border-radius: 4px;
+  padding: 2px 16px;
+}
+
+#current_page {
+  color: rgb(2, 34, 42);
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+/* Login & Create page */
+
+.login-page {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: inherit;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 4px;
+}
+.form button {
+  font-family: inherit;
+  text-transform: uppercase;
+  outline: 0;
+  background: rgb(80, 124, 128);
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background: rgb(80, 124, 128);
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 14px;
+}
+.form .message a {
+  color: rgb(80, 124, 128);
+  text-decoration: none;
+}
