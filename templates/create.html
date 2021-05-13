@@ -4,19 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="static/styles.css?ver=2">
+    <title>Register</title>
+    <link rel="stylesheet" href="../static/styles.css?ver=2">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
-</head>
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    
+    <script>
+      // Given new user information, save it to DB and redirect to login page
+      function register(){
+        $.ajax({
+          type: "POST",
+          url: "/api/register",
+          data: { id_give:$('#userid').val(), pw_give:$('#userpw').val(), nickname_give:$('#usernick').val(), email_give:$('#useremail').val()},
+          success: function(response){
+            if (response['result'] == 'success'){
+              alert(response['msg'])
+              window.location.href='/'
+            } else {
+              alert(response['msg'])
+            }
+          }
+        })
+      }    
+    </script>
+  </head>
 <body>
     <div class="login-page">
         <div class="form">
           <form class="register-form">
-            <input type="text" placeholder="name"/>
-            <input type="password" placeholder="password"/>
-            <input type="text" placeholder="email address"/>
-            <button>create</button>
+            <input type="text" placeholder="Id" id="userid"/>
+            <input type="password" placeholder="Password" id="userpw"/>
+            <input type="text" placeholder="Nickname" id="usernick"/>
+            <input type="text" placeholder="Email address" id="useremail"/>
+            <button onclick="register()">Create</button>
             <p class="message">Already registered? <a href="{{ url_for('login') }}">Sign In</a></p>
           </form>
         </div>

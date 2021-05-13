@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="static/styles.css?ver=87">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Jquery cookie import-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+</head>
+<body>
+    <div class="result_header">
+        <div id="result_info">
+            <h2 id="search_result">Search result from {{job_site}}</h2>
+            <h4>Found results for keyword {{job_title}} and location {{job_location}}</h4>
+        </div>
+        <div id="result_btn">
+            <button class="result_header_btn">Back to main</button>
+        </div>
+    </div>
+    <section class="result_grid">
+        <h3>Title</h3>
+        <h3>Company</h3>
+        <h3>Location</h3>
+        <h3>Description</h3>
+        <h3>Apply</h3>
+        <h3>Log Application</h3>
+        {% for job in jobs %}
+                <span>{{job.title}}</span>
+                <span>{{job.company}}</span>
+                <span>{{job.location}}</span>
+                <span>
+                    <form action="/forward" method="get" target="_blank">
+                        <button class="result_btns" name="id_desc" value="{{job.id}}" type=submit>Description</button>
+                    </form>
+                </span>
+                <span>
+                    <form action="/forward" method="get" target="_blank">
+                        <button class="result_btns" name="id_link" value="{{job.id}}" type=submit>Apply</button>
+                    </form>
+                </span>
+                <span>
+                    <button class="result_btns" id="open" onclick="openForm('{{job.id}}')" value="{{job.title}}">Open Form</button>
+                </span>
+                <div class="form-popup" id="{{job.id}}">
+                    <form action="/action_page.php" class="form-container">
+                    <h2>Log Application</h2>
+                
+                    <label for="title"><b>Title</b></label>
+                    <input type="text" name="title" value="{{job.title}}" required>
+                
+                    <label for="company"><b>Company</b></label>
+                    <input type="text"  name="company" value="{{job.company}}" required>
+                
+                    <label for="location"><b>Location</b></label>
+                    <input type="text"  name="location" value="{{job.location}}" required>
+                
+                    <label for="date"><b>Date</b></label>
+                    <input type="date" id="date" name="date" required>
+                
+                    <label for="id"><b>ID</b></label>
+                    <input type="text" placeholder="Not required to fill" name="id">
+                
+                    <button type="submit" class="btn">Log</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </form>
+            </div>
+        {% endfor %}
+
+
+    </section> 
+    <br>
+    <br>
+    <script>
+        var j = null;
+        function openForm(jobId) {
+          document.getElementById(jobId).style.display = "block";
+          j = jobId;
+        }
+        
+        function closeForm() {
+          document.getElementById(j).style.display = "none";
+        }
+    </script>
+        
+    
+</body>
+</html>
