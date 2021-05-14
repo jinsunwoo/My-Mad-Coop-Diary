@@ -14,6 +14,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <!--Jquery cookie import-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+        $(document).ready(function(){
+            load_user_info()
+        });
+
+        function load_user_info(){
+            $.ajax({
+                type: "GET",
+                url: "/api/validtoken",
+                headers: { 'token_give' : $.cookie('mmcdtoken') },
+                data: {},
+                success: function(response){
+                    // Log in time is not expired  
+                    if (response['result'] != 'success'){
+                        alert(response['msg'])
+                        localStorage.removeItem('mmcdID');
+                        window.location.href='/'
+                    }
+                }
+            })
+        }
+
+        function logapplication(jobID){
+            mmcdID = localStorage.getItem('mmcdID')
+            title = $("#"+jobID+" input[name=title]").val();
+            company = $("#"+jobID+" input[name=company]").val();
+            potato = $("#"+jobID+" input[name=potato]").val();
+            date = $("#"+jobID+" input[name=date]").val();
+            id = $("#"+jobID+" input[name=id]").val();
+            if(title =="" || company=="" || potato=="" || date=="") {
+                alert("Please fill all the required fields")
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/logapplication",
+                    data: { userid_give: mmcdID, title_give:title, company_give:company, location_give:potato, date_give:date, id_give:id},
+                    success: function(response){
+                        if (response['result'] == 'success'){
+                            alert("The application is logged successfully to Applied section");
+                            closeForm();
+                        } else {
+                            alert("Server cannot save the application")
+                        }
+                    }
+                })
+            }
+        }
+
+        var j = null;
+        function openForm(jobId) {
+          document.getElementById(jobId).style.display = "block";
+          j = jobId;
+        }
+        
+        function closeForm() {
+          document.getElementById(j).style.display = "none";
+        }
+
+        function main() {
+            window.location.href='/main'
+        }
+    </script>  
 </head>
 <body>
     <div class="result_header">
@@ -22,7 +84,7 @@
             <h4>Found results for keyword {{job_title}} and location {{job_location}}</h4>
         </div>
         <div id="result_btn">
-            <button class="result_header_btn">Back to main</button>
+            <button class="result_header_btn" onclick="main()">Back to main</button>
         </div>
     </div>
     <section class="result_grid">
@@ -50,27 +112,27 @@
                     <button class="result_btns" id="open" onclick="openForm('{{job.id}}')" value="{{job.title}}">Open Form</button>
                 </span>
                 <div class="form-popup" id="{{job.id}}">
-                    <form action="/action_page.php" class="form-container">
-                    <h2>Log Application</h2>
-                
-                    <label for="title"><b>Title</b></label>
-                    <input type="text" name="title" value="{{job.title}}" required>
-                
-                    <label for="company"><b>Company</b></label>
-                    <input type="text"  name="company" value="{{job.company}}" required>
-                
-                    <label for="location"><b>Location</b></label>
-                    <input type="text"  name="location" value="{{job.location}}" required>
-                
-                    <label for="date"><b>Date</b></label>
-                    <input type="date" id="date" name="date" required>
-                
-                    <label for="id"><b>ID</b></label>
-                    <input type="text" placeholder="Not required to fill" name="id">
-                
-                    <button type="submit" class="btn">Log</button>
-                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-                    </form>
+                    <div class="form-container">
+                        <h2>Log Application</h2>
+                    
+                        <label for="title"><b>Title</b></label>
+                        <input type="text" name="title" value="{{job.title}}" required>
+                    
+                        <label for="company"><b>Company</b></label>
+                        <input type="text"  name="company" value="{{job.company}}" required>
+                    
+                        <label for="location"><b>Location</b></label>
+                        <input type="text"  name="potato" value="{{job.location}}" required>
+                    
+                        <label for="date"><b>Date</b></label>
+                        <input type="date" id="date" name="date" required>
+                    
+                        <label for="id"><b>ID</b></label>
+                        <input type="text" placeholder="Not required to fill" name="id">
+                    
+                        <button onclick="logapplication('{{job.id}}')" class="btn">Log</button>
+                        <button class="btn cancel" onclick="closeForm()">Close</button>
+                    </div>
             </div>
         {% endfor %}
 
@@ -78,18 +140,5 @@
     </section> 
     <br>
     <br>
-    <script>
-        var j = null;
-        function openForm(jobId) {
-          document.getElementById(jobId).style.display = "block";
-          j = jobId;
-        }
-        
-        function closeForm() {
-          document.getElementById(j).style.display = "none";
-        }
-    </script>
-        
-    
 </body>
 </html>

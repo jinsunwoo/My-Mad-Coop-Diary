@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import hashlib
 import datetime
 import jwt
+from bson.objectid import ObjectId
 
 SECRET_KEY = "cherry"
 
@@ -23,20 +24,6 @@ def login():
 @app.route("/create")
 def create():
     return render_template("create.html")
-
-
-@app.route('/api/log', methods=['POST'])
-def api_log():
-    title = request.form['potato1']
-    company = request.form['potato2']
-    mmcdID = request.form['potato3']
-    location = request.form['potato4']
-    #date = request.form['potato5']
-   # id = request.form['potato6']
-
-    db.rabbit.insert_one(
-        {'potato1': title, 'potato2': company, 'potato3': mmcdID, 'potato4': location})
-    return jsonify({'result': 'success'})
 
 
 @app.route('/api/register', methods=['POST'])
@@ -105,47 +92,101 @@ def log_application():
     date_receive = request.form['date_give']
     id_receive = request.form['id_give']
     print(userid_receive)
-    db.coops.insert_one(
+    db.jobs.insert_one(
         {'userid': userid_receive, 'title': title_receive, 'company': company_receive, 'location': location_receive, 'date': date_receive, 'jobid': id_receive, 'status': "a"})
     return jsonify({'result': 'success'})
 
 
-@app.route("/main")
+@app.route('/api/phone', methods=['POST'])
+def api_phone():
+    checkedlist = request.form.getlist('checkedlist[]')
+    for checked in checkedlist:
+        db.jobs.update({"_id": ObjectId(checked)}, {"$set": {"status": "p"}})
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/interview', methods=['POST'])
+def api_interview():
+    checkedlist = request.form.getlist('checkedlist[]')
+    for checked in checkedlist:
+        db.jobs.update({"_id": ObjectId(checked)}, {"$set": {"status": "i"}})
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/job', methods=['POST'])
+def api_job():
+    checkedlist = request.form.getlist('checkedlist[]')
+    for checked in checkedlist:
+        db.jobs.update({"_id": ObjectId(checked)}, {"$set": {"status": "j"}})
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/declined', methods=['POST'])
+def api_declined():
+    checkedlist = request.form.getlist('checkedlist[]')
+    for checked in checkedlist:
+        db.jobs.update({"_id": ObjectId(checked)}, {"$set": {"status": "d"}})
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/ghosted', methods=['POST'])
+def api_ghosted():
+    checkedlist = request.form.getlist('checkedlist[]')
+    for checked in checkedlist:
+        db.jobs.update({"_id": ObjectId(checked)}, {"$set": {"status": "g"}})
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/deleted', methods=['POST'])
+def api_deleted():
+    checkedlist = request.form.getlist('checkedlist[]')
+    for checked in checkedlist:
+        db.jobs.remove({"_id": ObjectId(checked)})
+    return jsonify({'result': 'success'})
+
+    # print(type(checkedlist[0]))
+    # print(list(db.jobs.find({"_id": ObjectId(checkedlist[0])})))
+    # yay = db.jobs.find({'_id': checkedlist[0]})
+    # print(yay['title'])
+    return jsonify({'result': 'success'})
+
+
+@ app.route("/main")
 def main():
     return render_template("main.html")
 
 
-@app.route("/applied")
+@ app.route("/applied")
 def applied():
     return render_template("applied.html")
 
 
-@app.route("/phone")
+@ app.route("/phone")
 def phone():
     return render_template("phone.html")
 
 
-@app.route("/interview")
+@ app.route("/interview")
 def interview():
     return render_template("interview.html")
 
 
-@app.route("/job")
+@ app.route("/job")
 def job():
     return render_template("job.html")
 
 
-@app.route("/declined")
+@ app.route("/declined")
 def declined():
     return render_template("declined.html")
 
 
-@app.route("/ghosted")
+@ app.route("/ghosted")
 def ghosted():
     return render_template("ghosted.html")
 
 
-@app.route("/report")
+@ app.route("/report")
 def report():
     title = request.args.get('title')
     location = request.args.get('location')
@@ -160,7 +201,49 @@ def report():
     return render_template("view.html", job_title=title, job_location=location, job_site=site, jobs=jobs)
 
 
-@app.route("/forward", methods=['GET'])
+@ app.route("/senduserid")
+def senduserid():
+    if request.args.get('applied') is not None:
+        userid = request.args.get('applied')
+        applied_jobs = list(db.jobs.find({"status": "a", "userid": userid}))
+        # print(str(applied_jobs[0]['_id']))
+        return render_template("applied.html", applied_jobs=applied_jobs)
+    elif request.args.get('phone') is not None:
+        userid = request.args.get('phone')
+        phone_jobs = list(db.jobs.find({"status": "p", "userid": userid}))
+        return render_template("phone.html", phone_jobs=phone_jobs)
+    elif request.args.get('interview') is not None:
+        userid = request.args.get('interview')
+        interview_jobs = list(db.jobs.find({"status": "i", "userid": userid}))
+        return render_template("interview.html", interview_jobs=interview_jobs)
+    elif request.args.get('job') is not None:
+        userid = request.args.get('job')
+        job_jobs = list(db.jobs.find({"status": "j", "userid": userid}))
+        return render_template("job.html", job_jobs=job_jobs)
+    elif request.args.get('declined') is not None:
+        userid = request.args.get('declined')
+        declined_jobs = list(db.jobs.find({"status": "d", "userid": userid}))
+        return render_template("declined.html", declined_jobs=declined_jobs)
+    elif request.args.get('ghosted') is not None:
+        userid = request.args.get('ghosted')
+        ghosted_jobs = list(db.jobs.find({"status": "g", "userid": userid}))
+        return render_template("ghosted.html", ghosted_jobs=ghosted_jobs)
+
+
+@ app.route("/senduserid2")
+def senduserid2():
+    print(request.args.get('applied'))
+    return render_template("applied.html")
+
+
+# @app.route("/api/applied")
+# def api_applied():
+#    user_id = request.headers['mmcdid_give']
+ #   applied_jobs = list(db.jobs.find({"status": "a", "userid": user_id}))
+  #  return render_template("applied.html", applied_jobs=applied_jobs)
+
+
+@ app.route("/forward", methods=['GET'])
 def move_forward():
     # Moving forward code
     if request.args.get('id_link') is not None:
@@ -177,9 +260,9 @@ def move_forward():
         description_html = soup.find("div", {"id": "jobDescriptionText"})
         return f"<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE = edge'><meta name='viewport' content='width = device-width, initial-scale = 1.0'><title>Job Description</title><style>body{{background-color: #c0d6df;padding: 20px;}}</style></head><body><h2>Job Description</h2>{description_html}</body></html>"
 
-    #job_id = request.args.get('id_link')
-    #result = requests.get(f"https://www.indeed.com/viewjob?jk={job_id}")
-    #soup = BeautifulSoup(result.text, 'html.parser')
+    # job_id = request.args.get('id_link')
+    # result = requests.get(f"https://www.indeed.com/viewjob?jk={job_id}")
+    # soup = BeautifulSoup(result.text, 'html.parser')
     # link = soup.find("div", {"id": "applyButtonLinkContainer"}).find(
     #   "div", {"class": "icl-u-lg-hide"}).find("a")["href"]
     # return redirect(link)

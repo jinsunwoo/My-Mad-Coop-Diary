@@ -8,20 +8,6 @@ body {
   font-family: "Gloria Hallelujah", cursive;
 }
 
-a {
-  text-decoration: none;
-  color: #16697a;
-}
-a:visited {
-  color: #16697a;
-} /* Visited link    */
-a:hover {
-  color: #16697a;
-} /* Mouse over link */
-a:active {
-  color: #16697a;
-} /* Selected link   */
-
 section.result_grid {
   width: 100%;
   display: grid;
@@ -61,7 +47,7 @@ section.process_grid {
 .navbar_menu {
   display: flex;
   justify-content: space-around;
-  list-style-type: none;
+  width: 100%;
 }
 
 .navbar_menu_item {
@@ -70,7 +56,7 @@ section.process_grid {
   font-size: 19px;
 }
 
-#logout_btn {
+.logout_btn {
   color: white;
   font-family: inherit;
   font-size: 15px;
@@ -131,10 +117,18 @@ section.process_grid {
   margin-right: 20px;
 }
 
-#applied_jobs {
-  padding-top: 30px;
-  padding-left: 30px;
+.navbar_btn {
+  color: #16697a;
+  font-family: inherit;
   font-size: 17px;
+  font-weight: 300;
+  padding: 5px 17px;
+  border: 2px solid #82c0cc;
+  border-radius: 4px;
+  background-color: #82c0cc;
+  cursor: pointer;
+  margin-right: 25px;
+  margin-left: 50px;
 }
 
 #input_job_desc,
@@ -359,4 +353,23 @@ input[type="checkbox"] {
 .form .message a {
   color: rgb(80, 124, 128);
   text-decoration: none;
+}
+
+#notclickable {
+  pointer-events: none;
+  color: #051d22;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 400;
+  padding: 5px 17px;
+  border: 2px solid #82c0cc;
+  border-radius: 4px;
+  background-color: #82c0cc;
+  margin-right: 25px;
+  margin-left: 50px;
+  text-decoration: underline;
+}
+
+.hidden_btn {
+  display: none;
 }

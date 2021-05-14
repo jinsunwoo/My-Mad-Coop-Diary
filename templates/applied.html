@@ -5,35 +5,222 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applied</title>
-    <link rel="stylesheet" href="static/styles.css?ver=21">
+    <link rel="stylesheet" href="static/styles.css?ver=34">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
-    
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Jquery cookie import-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+        $(document).ready(function(){
+            load_user_info()
+            reload_page()
+        });
+
+        function load_user_info(){
+            $.ajax({
+                type: "GET",
+                url: "/api/validtoken",
+                headers: { 'token_give' : $.cookie('mmcdtoken') },
+                data: {},
+                success: function(response){
+                    // Log in time is not expired  
+                    if (response['result'] == 'success'){
+                        userinfo = response['userinfo']
+                        userid = userinfo['id']
+                        $('#applied').val(userid)
+                        $('#phone').val(userid)
+                        $('#interview').val(userid)
+                        $('#job').val(userid)
+                        $('#declined').val(userid)
+                        $('#ghosted').val(userid)
+                        //$('#applied2').val(userid)
+                    // Log in time is expired
+                    } else{
+                    alert(response['msg'])
+                    localStorage.removeItem('mmcdID');
+                    window.location.href='/'
+                    }
+                }
+            })
+        }
+
+        function phone() {
+            let checkboxes = $('input:checkbox');
+            let checkedlist = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                let checkbox = checkboxes[i];
+                if (checkbox.checked) {
+                    checkedlist.push(checkbox.id)
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/phone",
+                data:{checkedlist:checkedlist},
+                success: function(response){
+                    if (response['result'] == 'success'){
+                    alert("The selected jobs moved to phone status")
+                    //window.location.href='/applied'
+                    window.location.reload();
+                    } else {
+                    alert("this is not working")
+                    }
+                }
+            }) 
+        }
+
+        function interview() {
+            let checkboxes = $('input:checkbox');
+            let checkedlist = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                let checkbox = checkboxes[i];
+                if (checkbox.checked) {
+                    checkedlist.push(checkbox.id)
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/interview",
+                data:{checkedlist:checkedlist},
+                success: function(response){
+                    if (response['result'] == 'success'){
+                    alert("The selected jobs moved to interview status")
+                    window.location.reload();
+                    } else {
+                    alert("this is not working")
+                    }
+                }
+            }) 
+        }
+
+        function job() {
+            let checkboxes = $('input:checkbox');
+            let checkedlist = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                let checkbox = checkboxes[i];
+                if (checkbox.checked) {
+                    checkedlist.push(checkbox.id)
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/job",
+                data:{checkedlist:checkedlist},
+                success: function(response){
+                    if (response['result'] == 'success'){
+                    alert("The selected jobs moved to job offer status")
+                    window.location.reload();
+                    } else {
+                    alert("this is not working")
+                    }
+                }
+            }) 
+        }
+
+        function declined() {
+            let checkboxes = $('input:checkbox');
+            let checkedlist = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                let checkbox = checkboxes[i];
+                if (checkbox.checked) {
+                    checkedlist.push(checkbox.id)
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/declined",
+                data:{checkedlist:checkedlist},
+                success: function(response){
+                    if (response['result'] == 'success'){
+                    alert("The selected jobs moved to declined status")
+                    window.location.reload();
+                    } else {
+                    alert("this is not working")
+                    }
+                }
+            }) 
+        }
+
+        function ghosted() {
+            let checkboxes = $('input:checkbox');
+            let checkedlist = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                let checkbox = checkboxes[i];
+                if (checkbox.checked) {
+                    checkedlist.push(checkbox.id)
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/ghosted",
+                data:{checkedlist:checkedlist},
+                success: function(response){
+                    if (response['result'] == 'success'){
+                    alert("The selected jobs moved to ghosted status")
+                    window.location.reload();
+                    } else {
+                    alert("this is not working")
+                    }
+                }
+            }) 
+        }
+
+        function deleted() {
+            alert("deleted")
+            let checkboxes = $('input:checkbox');
+            let checkedlist = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                let checkbox = checkboxes[i];
+                if (checkbox.checked) {
+                    checkedlist.push(checkbox.id)
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/deleted",
+                data:{checkedlist:checkedlist},
+                success: function(response){
+                    if (response['result'] == 'success'){
+                    alert("The selected job(s) is(are) deleted")
+                    window.location.reload();
+                    } else {
+                    alert("this is not working")
+                    }
+                }
+            }) 
+        }
+    </script>
 </head>
 <body>
     <div id="header_navbar">
         <div class="header">
-            <a href="#" id="mmcd">My Mad Coop Diary</a>
+            <span id="mmcd">My Mad Coop Diary</span>
             <form action="/main" method="get">
-                <button type="submit" id="logout_btn">To main</button>
+                <button type="submit" class="logout_btn">To main</button>
             </form>
         </div>
-            <ul class="navbar_menu">
-                <li class="navbar_menu_item" id="current_page">Applied</li>
-                <li class="navbar_menu_item"><a href="{{ url_for('phone') }}">Phone screening/Assessment</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('interview') }}">Interview Offer</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('job') }}">Job offer</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('declined') }}">Declined</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('ghosted') }}">Ghosted</a></li>
-            </ul>
+        <div class="navbar_menu">
+            <form action="/senduserid" method="get">
+                <button name="applied" id="notclickable">Applied</button>
+                <button type="submit" class="navbar_btn" id="phone" name="phone">Phone screening/Assessment</button>
+                <button type="submit" class="navbar_btn" id="interview" name="interview">Interview Offer</button>
+                <button type="submit" class="navbar_btn" id="job" name="job">Job Offer</button>
+                <button type="submit" class="navbar_btn" id="declined" name="declined">Declined</button>
+                <button type="submit" class="navbar_btn" id="ghosted" name="ghosted">Ghosted</button>
+            </form>
+        </div>
+           
     </div>
     <div class="process_btns">
-        <button class="process_btn">Phone screening/Assessment</button>
-        <button class="process_btn">Interview Offer</button>
-        <button class="process_btn">Job Offer</button>
-        <button class="process_btn">Declined</button>
-        <button class="process_btn">Ghosted</button>
-        <button id="delete_btn">Delete</button>
+        <button class="process_btn" onclick="phone()">Phone screening/Assessment</button>
+        <button class="process_btn" onclick="interview()">Interview Offer</button>
+        <button class="process_btn" onclick="job()">Job Offer</button>
+        <button class="process_btn" onclick="declined()">Declined</button>
+        <button class="process_btn" onclick="ghosted()">Ghosted</button>
+        <button id="delete_btn" onclick="deleted()">Delete</button>
     </div>
     <section class="process_grid">
         <h3>#</h3>
@@ -42,17 +229,19 @@
         <h3>Location</h3>
         <h3>Date</h3>
         <h3>ID</h3>
-    </section>    
-    <div id="applied_jobs">
-        
-            <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-            <label for="vehicle1">Title: Developer Intern, Company: Google, Location: Toronto, CA, Application date: 21/05/06</label><br>
-            <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-            <label for="vehicle2"> I have a car</label><br>
-            <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-            <label for="vehicle3"> I have a boat</label><br><br>
-            
-          
+        {% for applied_job in applied_jobs %}
+            <span><input type="checkbox" id="{{applied_job['_id']}}"></span>
+            <span>{{applied_job['title']}}</span>
+            <span>{{applied_job['company']}}</span>
+            <span>{{applied_job['location']}}</span>
+            <span>{{applied_job['date']}}</span>
+            <span>{{applied_job['id']}}</span>
+        {% endfor %}
+    </section> 
+    <div class="hidden_btn"
+        <form action="/senduserid" method="get">
+            <button type="submit" onclick="reload_page()" id="applied" name="applied">Applied</button>  
+        </form> 
     </div>
 </body>
 </html>

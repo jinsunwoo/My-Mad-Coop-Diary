@@ -7,7 +7,7 @@
     <title>Index</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/styles.css?ver=74">
+    <link rel="stylesheet" href="../static/styles.css?ver=90">
     <!--Jquery and Ajax-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -19,28 +19,34 @@
         });
 
         function load_user_info(){
-        $.ajax({
-          type: "GET",
-          url: "/api/validtoken",
-          headers: { 'token_give' : $.cookie('mmcdtoken') },
-          data: {},
-          success: function(response){
-            // Log in time is not expired  
-            if (response['result'] == 'success'){
-                userinfo = response['userinfo']
-                nickname = userinfo['nick']
-                userid = userinfo['id']
-                localStorage.setItem('mmcdID', userid);
-                $('#usernick').text(nickname)
-            // Log in time is expired
-            } else{
-              alert(response['msg'])
-              localStorage.removeItem('mmcdID');
-              window.location.href='/'
-            }
-          }
-        })
-      }
+            $.ajax({
+                type: "GET",
+                url: "/api/validtoken",
+                headers: { 'token_give' : $.cookie('mmcdtoken') },
+                data: {},
+                success: function(response){
+                    // Log in time is not expired  
+                    if (response['result'] == 'success'){
+                        userinfo = response['userinfo']
+                        nickname = userinfo['nick']
+                        userid = userinfo['id']
+                        localStorage.setItem('mmcdID', userid);
+                        $('#usernick').text(nickname)
+                        $('#applied').val(userid)
+                        $('#phone').val(userid)
+                        $('#interview').val(userid)
+                        $('#job').val(userid)
+                        $('#declined').val(userid)
+                        $('#ghosted').val(userid)
+                    // Log in time is expired
+                    } else{
+                    alert(response['msg'])
+                    localStorage.removeItem('mmcdID');
+                    window.location.href='/'
+                    }
+                }
+            })
+        }
 
         function logapplication(){
             mmcdID = localStorage.getItem('mmcdID')
@@ -49,23 +55,22 @@
             potato = $('#potato').val();
             date = $('#date').val();
             id = $('#id').val();
-            alert(mmcdID)
-            $.ajax({
-                type: "POST",
-                url: "/api/logapplication",
-                data: { userid_give: mmcdID, title_give:title, company_give:company, location_give:potato, date_give:date, id_give:id},
-                success: function(response){
-                    if (response['result'] == 'success'){
-                        $('#title').val("");
-                        $('#company').val("");
-                        $('#potato').val("");
-                        $('#date').val("");
-                        $('#id').val("");
-                    } else {
-                        alert("Server cannot save the application")
+            if(title =="" || company=="" || potato=="" || date=="") {
+                alert("Please fill all the required fields")
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/logapplication",
+                    data: { userid_give: mmcdID, title_give:title, company_give:company, location_give:potato, date_give:date, id_give:id},
+                    success: function(response){
+                        if (response['result'] == 'success'){
+                            alert("The application is logged successfully to Applied section");
+                        } else {
+                            alert("Server cannot save the application")
+                        }
                     }
-                }
-            })
+                })
+            }
         }
 
         // Functions for log application button with pop up
@@ -84,26 +89,28 @@
 
         // Remove cookie from the browser and redirect user to login page
         function logout(){
-        $.removeCookie('mmcdtoken');
-        localStorage.removeItem('mmcdID');
-        window.location.href='/' 
-      }
+            $.removeCookie('mmcdtoken');
+            localStorage.removeItem('mmcdID');
+            window.location.href='/' 
+        }
     </script>
 </head>
 <body>
     <div id="header_navbar">
         <div class="header">
-            <a href="#" id="mmcd">My Mad Coop Diary</a>
-                <button id="logout_btn" onclick="logout()">Log Out</button>
+            <span id="mmcd">My Mad Coop Diary</span>
+                <button class="logout_btn" onclick="logout()">Log Out</button>
         </div>
-            <ul class="navbar_menu">
-                <li class="navbar_menu_item"><a href="{{ url_for('applied') }}">Applied</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('phone') }}">Phone screening/Assessment</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('interview') }}">Interview Offer</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('job') }}">Job offer</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('declined') }}">Declined</a></li>
-                <li class="navbar_menu_item"><a href="{{ url_for('ghosted') }}">Ghosted</a></li>    
-            </ul>
+        <div class="navbar_menu">
+            <form action="/senduserid" method="get">
+                <button type="submit" class="navbar_btn" id="applied" name="applied">Applied</button>
+                <button type="submit" class="navbar_btn" id="phone" name="phone">Phone screening/Assessment</button>
+                <button type="submit" class="navbar_btn" id="interview" name="interview">Interview Offer</button>
+                <button type="submit" class="navbar_btn" id="job" name="job">Job Offer</button>
+                <button type="submit" class="navbar_btn" id="declined" name="declined">Declined</button>
+                <button type="submit" class="navbar_btn" id="ghosted" name="ghosted">Ghosted</button>
+            </form>
+        </div>
     </div>
     <div class="log_app_area">
         <button class="log_app_btn" onclick="openForms()">Log application</button>
@@ -127,7 +134,7 @@
           <label for="id"><b>ID</b></label>
           <input type="text" id="id" placeholder="Not required to fill" name="id">
 
-          <button class="btn" onclick="logapplication()">Test here</button>
+          <button class="btn" onclick="logapplication()">Log</button>
           <button class="btn cancel" onclick="closeForms()">Close</button>
         </div>
     </form>
