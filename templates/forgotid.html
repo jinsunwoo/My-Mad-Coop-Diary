@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot ID</title>
+    <link rel="stylesheet" href="static/styles.css?ver=8">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Jquery cookie import-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  </head>
+<body>
+    <div class="login-page">
+        <div class="form">
+          <h3 id="auth_msg">Find your ID</h3>
+          <h5 id="auth_msg2">Enter your email and your registered ID will be sent to your email</h5>
+          <form class="login-form" id="sendid_form">
+            <input type="text" placeholder="Email" id="email"/>
+            <button id="sendid_btn">Send</button>
+            <p class="message">Wanna go back? <a href="{{ url_for('login') }}">Sign in</a></p>
+          </form>
+        </div>
+      </div>
+</body>
+<script>
+// plain javascript
+// contentLoaded event  read on mozilla.org
+// jquery
+// document.ready() ;; read on jquery website
+// it's often important that the javascript is run
+// only after the html has loaded.
+
+  $("#sendid_form").on("submit", sendid); // enter button
+  $("#sendid_btn").on("click", sendid); // click button
+  function sendid(event) {
+    // tells the browser not to submit the form as an ordinary html form
+    // i am handling it here!!
+    event.preventDefault();
+            console.log("this is working")
+            let email = $('#email').val();
+            if (email=="") {
+                alert ("Enter your email");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/forgotid2",
+                    data: {email_give: email},
+                    success: function (response) {
+                        if (response['result'] != 'success') {
+                            alert(response['msg'])
+                        } else {
+                            alert(response['msg'])
+                        }
+                    }
+                })
+            }
+        }
+</script>
+</html>

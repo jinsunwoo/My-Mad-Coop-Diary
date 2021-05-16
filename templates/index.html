@@ -4,51 +4,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <title>Log in</title>
+    <link rel="stylesheet" href="static/styles.css?ver=14">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
-   
-</head>
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Jquery cookie import-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    
+    <meta property="og:title" content="My Mad Coop Diary"/>
+    <meta property="og:description" content="My Mad Coop Diary is a web app where you can keep track of your job application as well as search for new jobs."/>
+    <meta property="og:image" content="{{ url_for('static', filename='mmcd.jpg') }}"/>
+    <style>
+      body{
+        height: 100%;
+      }
+    </style>
+  </head>
 <body>
-    <div id="header_navbar">
-        <div class="header">
-            <a href="#" id="mmcd">My Mad Coop Diary</a>
-            
-              
-                <button id="logout_btn">Log Out</button>
-         
+    <div class="login-page">
+        <div class="form">
+          <form class="login-form" id="login-form">
+            <input type="text" placeholder="Id" id="userid"/>
+            <input type="password" placeholder="Password" id="userpw"/>
+            <button id="login_btn">login</button>
+            <p class="message">Not registered? <a href="{{ url_for('create') }}">Create an account</a></p>
+            <p class="message"><a href="{{ url_for('forgotpw') }}">Forgot your password?</a></p>
+          </form>
         </div>
-        
-            <ul class="navbar_menu">
-                <li class="navbar_menu_item" data-link="#home">Applied</li>
-                <li class="navbar_menu_item" data-link="#home">Phone screening/Assessment</li>
-                <li class="navbar_menu_item" data-link="#home">Interview Offer</li>
-                <li class="navbar_menu_item" data-link="#home">Job offer</li>
-                <li class="navbar_menu_item" data-link="#home">Declined</li>
-                <li class="navbar_menu_item" data-link="#home">Ghosted</li>
-                
-            </ul>
-    </div>
-    <div class="log_app_area">
-        <button class="log_app_btn">Log application</button>
-    </div>
-    <h1 id="gl_user">Jin! Search for new jobs here</h1>
-    
-    <form class="search" action="/report" method="get">
-        <input type="text" id="input_job_desc" placeholder="Search by title, skill, or company" name="title"><br>
-        <input type="text" id="input_location" placeholder="Location" name="location"><br>
-        <button type="submit" class="search_btn" name="action" value="i">Indeed</button>
-        <button type="submit" class="search_btn" name="action" value="s">Stackoverflow</button>
-    </form>
-
-    <h3 id="user_statistics">You have applied to 100 jobs so far. <br>
-        However, 20 companies ghosted you. <br>
-        You got a chance to do phone screening or assesment 80 times. <br>
-        You got 50 interview offers. <br>
-        20 places declined you though. <br>
-        Finally, you got job offers from 50 places. 
-        </h3>
-    
+      </div>
+      <div id="developer_div">
+        <h3 id="developer_msg">Recommend using Google Chrome</h3>
+      </div>
 </body>
+<script>
+  // Log in with the given id and pw, get the token from the server and save it to cookie
+
+  $("#login-form").on("submit", login); // enter button
+  $("login_btn").on("click", login); // click button
+  function login(event) {
+    // tells the browser not to submit the form as an ordinary html form
+    // i am handling it here!!
+    event.preventDefault();
+
+    if ($('#userid').val()=="" || $('#userpw').val()=="") {
+      alert("Please fill both fields")
+    } else {
+      $.ajax({
+      type: "POST",
+      url: "/api/login",
+      data: { id_give:$('#userid').val(), pw_give:$('#userpw').val() },
+      success: function(response){
+        if (response['result'] == 'success'){
+          // Save token to cookie as "mmcdtoken"
+          $.cookie('mmcdtoken', response['token']);
+          window.location.href='/main'
+        } else{
+          alert(response['msg'])
+        }
+      }
+    })
+    }
+  }
+</script>
+
 </html>

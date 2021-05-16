@@ -10,6 +10,12 @@ def extract_indeed_pages(url):
     # indeed_result.text -> get the html of the requested url
     # soup: extract data (필요한 데이터로 편집해줌)
     soup = BeautifulSoup(result.text, 'html.parser')
+    print("soup", soup)
+    oocs = soup.find("p", {"class": "oocs"})
+    if oocs is not None:
+        redirect = oocs.find('a')['href']
+        result = requests.get(redirect)
+        soup = BeautifulSoup(result.text, 'html.parser')
     # find: 해당 클래스를 찾아라
     pagination = soup.find("div", {"class": "pagination"})
     # find_all: 다음에서 해당 되는 정보를 모두 찾아라 # list 형태로 주기 때문에 for page in pages 형태로 사용하면 됨
@@ -49,11 +55,23 @@ def extract_indeed_job(search_result):
 def extract_indeed_jobs(max_page, url):
     jobs = []
     for page in range(max_page):
-        print(f"Scrapping page {page}")
+        #print(f"Scrapping page {page}")
         result = requests.get(f"{url}&start={LIMIT*page}")
+        # print(f"{url}&start={LIMIT*page}")
         soup = BeautifulSoup(result.text, 'html.parser')
+        # print(soup)
+        oocs = soup.find("p", {"class": "oocs"})
+        print("oocs", oocs)
+        # print(oocs)
+        if oocs is not None:
+            redirect = oocs.find('a')['href']
+            # print(redirect)
+            result = requests.get(redirect)
+            soup = BeautifulSoup(result.text, 'html.parser')
         search_results = soup.find_all(
             "div", {"class": "jobsearch-SerpJobCard"})
+        print("search_result", search_results)
+        # print(soup)
         for search_result in search_results:
             job = extract_indeed_job(search_result)
             jobs.append(job)
@@ -61,7 +79,12 @@ def extract_indeed_jobs(max_page, url):
 
 
 def get_indeed_jobs(title, location):
+    if title == "":
+        title = "Search"
     url = f"https://www.indeed.com/jobs?q={title}&l={location}&limit={LIMIT}"
     max_page = extract_indeed_pages(url)
     jobs = extract_indeed_jobs(max_page, url)
     return jobs
+
+
+print(get_indeed_jobs("node developer", "korea"))

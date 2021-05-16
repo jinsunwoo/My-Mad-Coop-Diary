@@ -48,7 +48,6 @@
         }
 
         function deleted() {
-            alert("deleted")
             let checkboxes = $('input:checkbox');
             let checkedlist = [];
             for (let i = 0; i < checkboxes.length; i++) {
@@ -77,7 +76,7 @@
     <div id="header_navbar">
         <div class="header">
             <span id="mmcd">My Mad Coop Diary</span>
-            <form action="/" method="get">
+            <form action="/main" method="get">
                 <button type="submit" class="logout_btn">To main</button>
             </form>
         </div>

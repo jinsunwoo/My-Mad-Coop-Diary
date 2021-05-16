@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+    <link rel="stylesheet" href="static/styles.css?ver=6">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Jquery cookie import-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  </head>
+<body>
+    <div class="login-page">
+        <div class="form">
+          <h3 id="auth_msg">Enter your new password</h3>
+          <form class="login-form" id="reset_form">
+            <input type="password" placeholder="New password" id="newpw"/>
+            <input type="password" placeholder="New password Confirmation" id="newpw2"/>
+            <button id="reset_btn">Reset</button>
+          </form>
+        </div>
+      </div>
+</body>
+<script>
+    $("#reset_form").on("submit", reset); // enter button
+    $("reset_btn").on("click", reset); // click button
+    function reset(event) {
+        // tells the browser not to submit the form as an ordinary html form
+        // i am handling it here!!
+        event.preventDefault();
+        let new_password = $('#newpw').val();
+        let new_password2 = $('#newpw2').val()
+        if (new_password == "" || new_password2 == "") {
+            alert('Please fill both fields')
+        } else if(new_password != new_password2)  
+            alert("Password confirmation does not match. Please try again.")
+        else {
+            let userID = localStorage.getItem('forgotpwID');
+            let newPW = $('#newpw').val();
+            localStorage.removeItem('forgotpwID');
+            $.ajax({
+                type: "POST",
+                url: "/resetpw2",
+                data: {id_give: userID, pw_give: newPW},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert("You successfully reset your password")
+                        window.location.href = "{{ url_for('login') }}"
+                    } else {
+                        alert("Something is wrong with the serverside")
+                    }    
+                }
+            })
+        }
+    }
+</script>
+</html>

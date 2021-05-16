@@ -11,38 +11,45 @@
     <!--Jquery and Ajax-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    
-    <script>
-      // Given new user information, save it to DB and redirect to login page
-      function register(){
-        $.ajax({
-          type: "POST",
-          url: "/api/register",
-          data: { id_give:$('#userid').val(), pw_give:$('#userpw').val(), nickname_give:$('#usernick').val(), email_give:$('#useremail').val()},
-          success: function(response){
-            if (response['result'] == 'success'){
-              alert(response['msg'])
-              window.location.href='/'
-            } else {
-              alert(response['msg'])
-            }
-          }
-        })
-      }    
-    </script>
   </head>
 <body>
     <div class="login-page">
         <div class="form">
-          <form class="register-form">
+          <form class="register-form" id="create_form">
             <input type="text" placeholder="Id" id="userid"/>
             <input type="password" placeholder="Password" id="userpw"/>
             <input type="text" placeholder="Nickname" id="usernick"/>
             <input type="text" placeholder="Email address" id="useremail"/>
-            <button onclick="register()">Create</button>
+            <button id="create_btn">Create</button>
             <p class="message">Already registered? <a href="{{ url_for('login') }}">Sign In</a></p>
           </form>
         </div>
       </div>
 </body>
+<script>
+  $("#create_form").on("submit", create); // enter button
+  $("create_btn").on("click", create); // click button
+  function create(event) {
+    // tells the browser not to submit the form as an ordinary html form
+    // i am handling it here!!
+    event.preventDefault();
+    if($('#userid').val()=="" || $('#userpw').val()=="" || $('#usernick').val()=="" || $('#useremail').val()=="") {
+      alert("Please fill all the fields to register")
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "/api/register",
+        data: { id_give:$('#userid').val(), pw_give:$('#userpw').val(), nickname_give:$('#usernick').val(), email_give:$('#useremail').val()},
+        success: function(response){
+          if (response['result'] == 'success'){
+            alert(response['msg'])
+            window.location.href='/'
+          } else {
+            alert(response['msg'])
+          }
+        }
+      })
+    }
+  }    
+</script>
 </html>

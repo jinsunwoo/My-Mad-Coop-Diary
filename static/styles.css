@@ -12,7 +12,7 @@ section.result_grid {
   width: 100%;
   display: grid;
   grid-template-columns: 30% 12% 12% 12% 12% 12%;
-  padding: 0 35px;
+  padding-left: 75px;
   gap: 20px;
 }
 
@@ -192,7 +192,7 @@ input[type="checkbox"] {
   border-radius: 4px;
   background-color: #084c61;
   cursor: pointer;
-  margin: 35px 35px;
+  margin: 50px 75px;
 }
 
 #search_result {
@@ -205,8 +205,12 @@ input[type="checkbox"] {
 }
 
 #result_info {
-  padding-left: 35px;
-  padding-top: 30px;
+  padding-left: 75px;
+  padding-top: 50px;
+}
+
+#no_result {
+  margin-left: 75px;
 }
 
 /* Pop up Form !!! */
@@ -372,4 +376,30 @@ input[type="checkbox"] {
 
 .hidden_btn {
   display: none;
+}
+
+.no_margin {
+  margin: 0;
+}
+
+#auth_msg {
+  color: rgb(80, 124, 128);
+}
+
+#auth_msg2 {
+  color: rgb(109, 116, 116);
+}
+
+#login_btn {
+  z-index: 3;
+}
+
+#developer_div {
+  float: right;
+  padding-right: 80px;
+  padding-top: 100px;
+}
+
+#developer_msg {
+  color: rgb(8, 48, 36);
 }

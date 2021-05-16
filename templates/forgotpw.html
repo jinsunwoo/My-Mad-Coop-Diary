@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+    <link rel="stylesheet" href="static/styles.css?ver=6">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <!--Jquery and Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Jquery cookie import-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  </head>
+<body>
+    <div class="login-page">
+        <div class="form">
+          <h3 id="auth_msg">Reset your password</h3>
+          <form class="login-form" id="forgotpw_form">
+            <input type="text" placeholder="Id" id="userid"/>
+            <input type="password" placeholder="Email" id="useremail"/>
+            <button id="forgotpw_btn">Next</button>
+            <p class="message">Wanna go back? <a href="{{ url_for('login') }}">Sign in</a></p>
+            <p class="message"><a href="{{ url_for('forgotid') }}">Forgot ID?</a></p>
+          </form>
+        </div>
+      </div>
+</body>
+<script>
+    $("#forgotpw_form").on("submit", forgotpw); // enter button
+    $("#forgotpw_btn").on("click", forgotpw); // click button
+    function forgotpw(event) {
+        // tells the browser not to submit the form as an ordinary html form
+        // i am handling it here!!
+        event.preventDefault();
+        let user_id = $('#userid').val();
+        let user_email = $('#useremail').val()
+        if (user_id == "") {
+            alert('Please enter your ID')
+        } else if (user_email == "") {
+            alert('Please enter your Email')
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/forgotpw2",
+                data: {id_give: user_id, email_give: user_email},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        localStorage.setItem('forgotpwID', user_id);
+                        window.location.href = "{{ url_for('resetpw') }}"
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+    }
+</script>
+</html>

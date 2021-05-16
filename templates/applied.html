@@ -62,8 +62,6 @@
                 data:{checkedlist:checkedlist},
                 success: function(response){
                     if (response['result'] == 'success'){
-                    alert("The selected jobs moved to phone status")
-                    //window.location.href='/applied'
                     window.location.reload();
                     } else {
                     alert("this is not working")
@@ -87,7 +85,6 @@
                 data:{checkedlist:checkedlist},
                 success: function(response){
                     if (response['result'] == 'success'){
-                    alert("The selected jobs moved to interview status")
                     window.location.reload();
                     } else {
                     alert("this is not working")
@@ -111,7 +108,6 @@
                 data:{checkedlist:checkedlist},
                 success: function(response){
                     if (response['result'] == 'success'){
-                    alert("The selected jobs moved to job offer status")
                     window.location.reload();
                     } else {
                     alert("this is not working")
@@ -135,7 +131,6 @@
                 data:{checkedlist:checkedlist},
                 success: function(response){
                     if (response['result'] == 'success'){
-                    alert("The selected jobs moved to declined status")
                     window.location.reload();
                     } else {
                     alert("this is not working")
@@ -159,7 +154,6 @@
                 data:{checkedlist:checkedlist},
                 success: function(response){
                     if (response['result'] == 'success'){
-                    alert("The selected jobs moved to ghosted status")
                     window.location.reload();
                     } else {
                     alert("this is not working")
@@ -169,7 +163,6 @@
         }
 
         function deleted() {
-            alert("deleted")
             let checkboxes = $('input:checkbox');
             let checkedlist = [];
             for (let i = 0; i < checkboxes.length; i++) {
